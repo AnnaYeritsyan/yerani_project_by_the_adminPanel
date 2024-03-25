@@ -41,6 +41,8 @@ function App() {
     }, 3000)
   }, [])
 
+ 
+
   const products = [
     {
       id: 1,
@@ -171,6 +173,17 @@ function App() {
        Velit officia consequat duis enim velit`
     },
   ]
+
+  const filterProduct = (e:string)=>{
+    console.log(e)
+ 
+const isFiltered = products.filter((p:any)=>p.name !==e)
+    
+        console.log(isFiltered)
+      
+  
+  }
+
   return (
     <AuthProvider>
 {
@@ -185,7 +198,7 @@ function App() {
             <Route path='/' element={<HomeWrapper />}>
               <Route index element={<Home />} />
               <Route path='/products'>
-                <Route index element={<Products {...{ products }} />} />
+                <Route index element={<Products products={products } filterFoo = {filterProduct} />} />
                 <Route path=':id' element={<ProductViews {...{ products }} />} />
               </Route>
               <Route path='about_us' element={<AboutUs />} />

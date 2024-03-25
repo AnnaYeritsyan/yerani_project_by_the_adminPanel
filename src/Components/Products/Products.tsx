@@ -14,8 +14,12 @@ const vision = ['Honey-scented','Apple','Plum','Apricot','Peach', 'Fig','Hon','S
 
 
 
-const  SelectAutoWidth = () => {
-  
+const  SelectAutoWidth = ({products, selectValueFunction}:{products:any, selectValueFunction:any}) => {
+  const [selectValue, setSelectValue] = useState('')
+  const handleChange=(e:any)=>{
+    setSelectValue(e.target.value)
+    selectValueFunction(e.target.value)
+  }
 
   return (
    
@@ -23,15 +27,20 @@ const  SelectAutoWidth = () => {
     <Box sx={{width:'80%'}}>
      <FormControl sx={{ m: 1, minWidth:264 }}>
         <InputLabel htmlFor="grouped-select">All</InputLabel>
-        <Select defaultValue="" id="grouped-select" label="All">
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={1}>All</MenuItem>
-          <MenuItem value={1}>New</MenuItem>
-          <MenuItem value={2}>Limited edition</MenuItem>
-          <MenuItem value={3}>Coming soon</MenuItem>
-          
+        <Select 
+        // defaultValue=""
+        value={selectValue}
+         id="grouped-select"
+          label="All" 
+          onChange={handleChange}>
+        
+          {
+            products.map((e:any, idx:number)=>(
+            
+              <MenuItem value = {e.name} key={idx}>{e.name}</MenuItem>
+         
+            ))
+          }
         </Select>
       </FormControl>
       <FormControl sx={{ m: 1, minWidth: 264 }}>
@@ -67,13 +76,20 @@ const  SelectAutoWidth = () => {
   );
 }
 
-const Products = ({products}:any) => {
+const Products = ({products, filterFoo}:any) => {
+const [filterData, setFilterData] = useState<string>('')
 
+const getSelectValue = (e:any)=>{
+  console.log('selectvalue' + e)
+  filterFoo(e)
+}
+// console.log(products)
+  // console.log(filterFoo)
   return (
     <Box sx={{ mt: '63px' }}>
       <HeaderName />
       <Box sx={{ ...commondFlex, alignItems: 'center' }}>
-        <SelectAutoWidth />
+        <SelectAutoWidth products = {products} selectValueFunction = {getSelectValue}/>
         <Grid container spacing={2} width="83%" sx={{ marginTop: 2 }}>
           <ProductsItem product={products}/>
         </Grid>
